@@ -86,16 +86,24 @@ body{
     color: #bbe1fa;
 }
 
-.console{
+
+.console-wrap{
     height: 25%;
 }
-.console textarea{
+.console{
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     height: 100%;
     width: 100%;
-    resize: none;
+    overflow-y: scroll;
     background-color: #1b262c;
     color: #bbe1fa;
-    border: none;
+}
+.console p{
+    margin: 0;
+    color:#E13923;
+}
+.console .code{
+    color: #FFC737;
 }
 
 /* Pantalla Tabla Tokens */

@@ -24,9 +24,6 @@
         <div class="all">
             <div class="one">
                 <div class="textwrapper">
-                    <textarea id="my-selector"></textarea>
-                </div>
-                <!-- <div class="textwrapper">
                     <textarea
                     name="sentencia-sql" 
                     id="sentencia-sql"
@@ -39,13 +36,13 @@ FROM INSCRITOS
 WHERE A# IN (SELECT A#
 FROM ALUMNOS
 WHERE ANOMBRE='MESSI LIONEL'));</textarea>
-                </div> -->
+                </div>
                 <div class="actions">
                     <button onclick="clean()" class="run"><i class="fas fa-redo-alt"></i></button>
                     <button onclick="escanear()" class="run"><i class="fas fa-play"></i></button>
                 </div>
-                <div class="console">
-                    <textarea name="console" id="console" placeholder="Command output..." disabled></textarea>
+                <div class="console-wrap">
+                    <div class="console" id="consola" aria-placeholder="Console output..."></div>
                 </div>
             </div>
             <div class="two" id="tablas">
@@ -69,8 +66,6 @@ WHERE ANOMBRE='MESSI LIONEL'));</textarea>
         </div>
     </div>
 
-    <script src="../js/codeflask.js"></script>
     <script src="../js/escaner.js"></script>
-    <script src="../prism/prism.js"></script>
 </body>
 </html>

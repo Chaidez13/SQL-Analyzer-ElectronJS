@@ -6,7 +6,8 @@ function clean(){
 function escanear(){
     clean()
     const text = document.querySelector('#sentencia-sql').value;
-    console.log(text)
+    var consola = document.getElementById("consola");
+    consola.innerHTML = ""
     var listaTokens = [], listaId = [], listaCo = [];
     var c = 1, error = 100;
 
@@ -19,36 +20,83 @@ function escanear(){
     const rel = /[<>=]+/
 
     var texto = text.split(lineSeparator)
-    console.log(texto)
 
     for (let i = 0; i < texto.length; i++) {
         const line = (i+1);
+        var comilla = false;
         const lineaTexto = texto[i];
-        console.log(lineaTexto)
 
         const tokens = lineaTexto.match(regex);
-        console.log(tokens)
 
         tokens.forEach(e => {
             var value, type;
 
             if(rel.test(e)){
                 type = 8;
-                value = 83;
+                switch (e) {
+                    case ">": 
+                        value=81;
+                    break;
+                    case "<": 
+                        value=82; 
+                    break;
+                    case "=": 
+                        value=83; 
+                    break;
+                    case ">=": 
+                        value=84; 
+                    break;
+                    case "<=": 
+                        value=85; 
+                    break;
+					}
                 listaTokens.push({
                     valor: type,
                     linea: i,
                 })
             } else if(del.test(e)){
                 type = 5;
-                value = 51;
+                switch(e){
+                    case ",": 
+                        value=50;
+                    break;
+                    case ".": 
+                        value=51; 
+                    break;
+                    case "(": 
+                        value=52; 
+                    break;
+                    case ")": 
+                        value=53; 
+                    break;
+                    case ";": 
+                        value=55; 
+                    break;
+					default: 
+                        value = 54;
+						comilla = !comilla;
+					break;
+                }
                 listaTokens.push({
-                    valor: type,
+                    valor: value,
                     linea: i,
                 })
             } else if(ope.test(e)){
                 type = 7;
-                value = 72;
+                switch (e) {
+					case "+":
+                        value=70;
+                    break;
+                    case "-": 
+                        value=71; 
+                    break;
+                    case "*": 
+                        value=72; 
+                    break;
+                    case "/": 
+                        value=73;
+                    break;
+					}
                 listaTokens.push({
                     valor: type,
                     linea: i,
@@ -58,6 +106,17 @@ function escanear(){
                 value = palabrasReservadas.find(word => word.palabra === e).valor;
                 listaTokens.push({
                     valor: value,
+                    linea: i,
+                })
+            } else if(comilla){
+                type = 6;
+                value = 62;
+                if(!listaCo.find(token => token === e)){
+                    listaCo.push(e)
+                }
+                value = listaCo.indexOf(e) + 600;
+                listaTokens.push({
+                    valor: type,
                     linea: i,
                 })
             } else if(id.test(e)){
@@ -71,7 +130,8 @@ function escanear(){
                     linea: i,
                 })
             } else if(con.test(e)) {
-                type = 61;
+                type = 6;
+                value = 61;
                 if(!listaCo.find(token => token === e)){
                     listaCo.push(e)
                 }
@@ -80,6 +140,8 @@ function escanear(){
                     valor: type,
                     linea: i,
                 })
+            } else {
+                error = 101;
             }
 
             if(error==100){
@@ -91,6 +153,15 @@ function escanear(){
             }
         });
     }
+    
+    if(error == 100){
+        var date = new Date();
+        var output = document.createElement("p");
+        const exit = "["+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()+"]: <span class='code'>100: </span> sin error sintáctico...";
+        output.innerHTML = exit;
+        consola.appendChild(output);
+    }
+
 }
 
 const palabrasReservadas = [
