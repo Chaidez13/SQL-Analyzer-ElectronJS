@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analizador SQL</title>
+    <link rel="stylesheet" href="../prism/prism.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+    />
+    <script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous">
+    </script>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-database"></i> SQL Analyzer</h1>
+    </div>
+    <div class="content">
+        <div class="all">
+            <div class="one">
+                <div class="textwrapper">
+                    <textarea id="my-selector"></textarea>
+                </div>
+                <!-- <div class="textwrapper">
+                    <textarea
+                    name="sentencia-sql" 
+                    id="sentencia-sql"
+                    placeholder="SQL>"
+                    style="background-color: #bbe1fa;">
+SELECT M#,MNOMBRE
+FROM MATERIAS
+WHERE M# IN (SELECT M#
+FROM INSCRITOS
+WHERE A# IN (SELECT A#
+FROM ALUMNOS
+WHERE ANOMBRE='MESSI LIONEL'));</textarea>
+                </div> -->
+                <div class="actions">
+                    <button onclick="clean()" class="run"><i class="fas fa-redo-alt"></i></button>
+                    <button onclick="escanear()" class="run"><i class="fas fa-play"></i></button>
+                </div>
+                <div class="console">
+                    <textarea name="console" id="console" placeholder="Command output..." disabled></textarea>
+                </div>
+            </div>
+            <div class="two" id="tablas">
+                <table class="all-tokens" id="all-tokens">
+                    <tr>
+                        <th>Número</th>
+                        <th>Linea</th>
+                        <th>Token</th>
+                        <th>Tipo</th>
+                        <th>Código</th>
+                    </tr>
+                </table>
+                <!--
+                    <script>
+                        $(document).ready(function(){
+                           $('#tablas').load("tablaTokens.html");
+                        });
+                        </script>
+                -->
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/codeflask.js"></script>
+    <script src="../js/escaner.js"></script>
+    <script src="../prism/prism.js"></script>
+</body>
+</html>
