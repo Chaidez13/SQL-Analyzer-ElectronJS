@@ -44,12 +44,12 @@ body{
 }
 .one{
     height: 100%;
-    width: 70%;
+    width: 60%;
     overflow: hidden;
 }
 .two{
     height: 100%;
-    width: 30%;
+    width: 40%;
     border-left: 2px solid #0A0E10;
     background-color: #061C2B;
     overflow-y: scroll;
@@ -66,7 +66,6 @@ body{
 }
 .actions{
     margin: 5px;
-
     height: 5%;
 }
 .run{
@@ -85,7 +84,12 @@ body{
     transform: rotate(90deg);
     color: #bbe1fa;
 }
-
+#codeeditor{
+    height: 65%;
+}
+#codeeditor > div{
+    height: 100%;
+}
 
 .console-wrap{
     height: 25%;

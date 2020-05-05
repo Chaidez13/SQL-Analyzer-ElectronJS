@@ -10,11 +10,10 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
     />
-    <script
-        src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-        crossorigin="anonymous">
-    </script>
+    <link rel="stylesheet" href="../cm/codemirror.css">
+    <script src="../cm/codemirror.js"></script>
+    <script src="../cm/sql/sql.js"></script>
+    <link rel="stylesheet" href="../cm/theme/midnight.css">
 </head>
 <body>
     <div class="header">
@@ -23,7 +22,10 @@
     <div class="content">
         <div class="all">
             <div class="one">
-                <div class="textwrapper">
+                <div id="codeeditor">
+                    
+                </div>
+                <!-- <div class="textwrapper">
                     <textarea
                     name="sentencia-sql" 
                     id="sentencia-sql"
@@ -35,8 +37,8 @@ WHERE M# IN (SELECT M#
 FROM INSCRITOS
 WHERE A# IN (SELECT A#
 FROM ALUMNOS
-WHERE ANOMBRE='MESSI LIONEL'));</textarea>
-                </div>
+WHERE ANOMBRE='MESSI LIONEL'))</textarea>
+                </div> -->
                 <div class="actions">
                     <button onclick="clean()" class="run"><i class="fas fa-redo-alt"></i></button>
                     <button onclick="escanear()" class="run"><i class="fas fa-play"></i></button>
@@ -55,17 +57,21 @@ WHERE ANOMBRE='MESSI LIONEL'));</textarea>
                         <th>Código</th>
                     </tr>
                 </table>
-                <!--
-                    <script>
-                        $(document).ready(function(){
-                           $('#tablas').load("tablaTokens.html");
-                        });
-                        </script>
-                -->
             </div>
         </div>
     </div>
 
+    <script>
+        var editor = CodeMirror(document.querySelector('#codeeditor'), {
+            value: "SELECT M#,MNOMBRE\nFROM MATERIAS\nWHERE M# IN (SELECT M#\nFROM INSCRITOS\nWHERE A# IN (SELECT A#\nFROM ALUMNOS\nWHERE ANOMBRE='MESSI LIONEL'))",
+            mode: 'sql',
+            theme: 'midnight',
+            lineNumbers: true,
+        })
+    </script>
+
+    <script src="../js/extras.js"></script>
     <script src="../js/escaner.js"></script>
+    <script src="../js/parser.js"></script>
 </body>
 </html>

@@ -5,31 +5,28 @@ function clean(){
 
 function escanear(){
     clean()
-    const text = document.querySelector('#sentencia-sql').value;
-    var consola = document.getElementById("consola");
-    consola.innerHTML = ""
+    const text = editor.doc.children[0].lines;
+    document.getElementById("consola").innerHTML = "";
     var listaTokens = [], listaId = [], listaCo = [];
-    var c = 1, error = 100;
-
-    const lineSeparator = /\n/g;
-    const regex = />=|<=|(?<=').*(?=')|\w+[#]?|\S/g;
+    var c = 1, error_val = 100;
+    
+    const regex = />=|<=|(?<=([\"']\b))(?:(?=(\\?))\2.)*?(?=\1)|\w+[#]?|\S/g;
     const del = /[().,'‘’;]/
     const ope = /[*+-/]/
     const id = /[@]?[a-zA-Z]\w*[#]?/
     const con = /\d+[,.]?\d*/
     const rel = /[<>=]+/
 
-    var texto = text.split(lineSeparator)
-
-    for (let i = 0; i < texto.length; i++) {
+    for (let i = 0; i < text.length; i++) {
         const line = (i+1);
         var comilla = false;
-        const lineaTexto = texto[i];
 
-        const tokens = lineaTexto.match(regex);
+        const tokens = text[i].text.match(regex);
 
+        if(tokens != null)
         tokens.forEach(e => {
-            var value, type;
+            var value, type
+            error_val = 100
 
             if(rel.test(e)){
                 type = 8;
@@ -52,7 +49,7 @@ function escanear(){
 					}
                 listaTokens.push({
                     valor: type,
-                    linea: i,
+                    linea: line,
                 })
             } else if(del.test(e)){
                 type = 5;
@@ -79,7 +76,7 @@ function escanear(){
                 }
                 listaTokens.push({
                     valor: value,
-                    linea: i,
+                    linea: line,
                 })
             } else if(ope.test(e)){
                 type = 7;
@@ -99,25 +96,24 @@ function escanear(){
 					}
                 listaTokens.push({
                     valor: type,
-                    linea: i,
+                    linea: line,
                 })
             } else if(palabrasReservadas.find(word => word.palabra === e) ){
                 type = 1;
                 value = palabrasReservadas.find(word => word.palabra === e).valor;
                 listaTokens.push({
                     valor: value,
-                    linea: i,
+                    linea: line,
                 })
             } else if(comilla){
                 type = 6;
-                value = 62;
                 if(!listaCo.find(token => token === e)){
                     listaCo.push(e)
                 }
                 value = listaCo.indexOf(e) + 600;
                 listaTokens.push({
-                    valor: type,
-                    linea: i,
+                    valor: 62,
+                    linea: line,
                 })
             } else if(id.test(e)){
                 type = 4;
@@ -127,41 +123,39 @@ function escanear(){
                 value = listaId.indexOf(e) + 400;
                 listaTokens.push({
                     valor: type,
-                    linea: i,
+                    linea: line,
                 })
             } else if(con.test(e)) {
                 type = 6;
-                value = 61;
                 if(!listaCo.find(token => token === e)){
                     listaCo.push(e)
                 }
                 value = listaCo.indexOf(e) + 600;
                 listaTokens.push({
-                    valor: type,
-                    linea: i,
+                    valor: 61,
+                    linea: line,
                 })
             } else {
-                error = 101;
+                error_val = 101;
             }
 
-            if(error==100){
+            if(error_val==100){
                 var newElement = document.createElement("TR");
                 var fila="<tr><td>"+c+"</td><td>"+line+"</td><td>"+e+"</td><td>"+type+"</td><td>"+value+"</td></tr>";
                 newElement.innerHTML=fila;
                 document.getElementById("all-tokens").appendChild(newElement);
                 c++;
+            }else{
+                error_val = 101,
+                consoleOut(101, "Error léxico en línea: " + line + ": " + e)
             }
         });
     }
     
-    if(error == 100){
-        var date = new Date();
-        var output = document.createElement("p");
-        const exit = "["+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()+"]: <span class='code'>100: </span> sin error sintáctico...";
-        output.innerHTML = exit;
-        consola.appendChild(output);
+    if(error_val == 100){
+        parser(listaTokens);
+        consoleOut(100, "Sin error léxico.")
     }
-
 }
 
 const palabrasReservadas = [
