@@ -33,7 +33,7 @@ const templateMenu = [
             {
                 label: 'Clean',
                 click(){
-                   
+
                 }
             },
             {
@@ -44,17 +44,6 @@ const templateMenu = [
             }
         ]
     },
-    {
-        label: 'View',
-        submenu: [
-            {
-                label: 'Show/Hide token table',
-                click(){
-                    document.getElementById("tablas").style.display = "none";
-                }
-            }
-        ]
-    }
 ]
 
 if(process.env.NODE_ENV !== 'production'){

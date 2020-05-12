@@ -1,9 +1,14 @@
 
+var tabla_semantica = [];
+var tabla_atributo = [];
+var tabla_restric = [];
+
 function getHora(){
     var date = new Date();
     return date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()
 }
 
+//Imprimir código en consola
 function consoleOut(code, message){
     var consola = document.getElementById("consola");
     var output = document.createElement("p");
@@ -12,6 +17,11 @@ function consoleOut(code, message){
     consola.appendChild(output);
 }
 
+//Reglas 700/////////////////////////////
+
+//Fin de reglas 700//////////////////////
+
+//Tabla de tokens
 const tabla_sintactica = [
     {
         renglon: 999,

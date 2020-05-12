@@ -1,17 +1,21 @@
 
 function parser(tokens){
+    console.log(tabla_semantica);
+    console.log(tabla_atributo);
+    console.log(tabla_restric);
     var pila = [];
     pila.push(199)
     pila.push(999)
     tokens.push({
         valor: 199,
-        linea: 0,
+        linea: tokens[tokens.length-1].linea,
     })
     var apun = 0, x, k;
     do{
         x = pila.pop();
         k = tokens[apun].valor;
-        if(x < 200){
+        if(x < 200 && x!= 99){
+            //console.log(x + " = " + k)
             if(x == k){
                 apun ++;
             }else{
