@@ -14,6 +14,7 @@
     "codeflask": "^1.4.1",
     "codemirror": "^5.52.2",
     "electron": "^8.1.1",
-    "electron-reload": "^1.5.0"
+    "electron-reload": "^1.5.0",
+    "mysql": "^2.18.1"
   }
 }

@@ -25,23 +25,10 @@
                 <div id="codeeditor">
                     
                 </div>
-                <!-- <div class="textwrapper">
-                    <textarea
-                    name="sentencia-sql" 
-                    id="sentencia-sql"
-                    placeholder="SQL>"
-                    style="background-color: #bbe1fa;">
-SELECT M#,MNOMBRE
-FROM MATERIAS
-WHERE M# IN (SELECT M#
-FROM INSCRITOS
-WHERE A# IN (SELECT A#
-FROM ALUMNOS
-WHERE ANOMBRE='MESSI LIONEL'))</textarea>
-                </div> -->
                 <div class="actions">
-                    <button onclick="clean()" class="run"><i class="fas fa-redo-alt"></i></button>
+                    <button onclick="cleanConsole()" class="run"><i class="fas fa-redo-alt"></i></button>
                     <button onclick="escanear()" class="run"><i class="fas fa-play"></i></button>
+                    <button onclick="traerAtributos()" class="run"><i class="fas fa-database"></i></i></button>
                 </div>
                 <div class="console-wrap">
                     <div class="console" id="consola" aria-placeholder="Console output..."></div>
@@ -49,21 +36,81 @@ WHERE ANOMBRE='MESSI LIONEL'))</textarea>
             </div>
             <div class="two" id="tablas">
                 <table class="all-tokens" id="all-tokens">
-                    <tr>
+                    <!-- <tr>
                         <th>Número</th>
                         <th>Linea</th>
                         <th>Token</th>
                         <th>Tipo</th>
                         <th>Código</th>
-                    </tr>
+                    </tr> -->
                 </table>
             </div>
         </div>
     </div>
 
     <script>
+
         var editor = CodeMirror(document.querySelector('#codeeditor'), {
-            value: "SELECT M#,MNOMBRE\nFROM MATERIAS\nWHERE M# IN (SELECT M#\nFROM INSCRITOS\nWHERE A# IN (SELECT A#\nFROM ALUMNOS\nWHERE ANOMBRE='MESSI LIONEL'))",
+            value: `CREATE TABLE DEPARTAMENTOS(
+D_ID CHAR(2) NOT NULL,
+DNOMBRE CHAR(6) NOT NULL,
+
+CONSTRAINT PK_DEPARTAMENTOS PRIMARY KEY (D_ID));
+
+CREATE TABLE CARRERAS(
+C_ID CHAR(2) NOT NULL,
+CNOMBRE CHAR(3) NOT NULL,
+VIGENCIA CHAR(4) NOT NULL,
+SEMESTRES NUMERIC(2) NOT NULL,
+D_ID CHAR(2) NOT NULL,
+
+CONSTRAINT PK_CARRERAS PRIMARY KEY (C_ID),
+CONSTRAINT FK_CARRERAS FOREIGN KEY (D_ID) REFERENCES DEPARTAMENTOS(D_ID));
+
+CREATE TABLE ALUMNOS(
+A_ID CHAR(2) NOT NULL,
+ANOMBRE CHAR(20) NOT NULL,
+GENERACION CHAR(4) NOT NULL,
+SEXO CHAR(1) NOT NULL,
+C_ID CHAR(2) NOT NULL,
+
+CONSTRAINT PK_ALUMNOS PRIMARY KEY(A_ID),
+CONSTRAINT FK_ALUMNOS FOREIGN KEY(C_ID)REFERENCES CARRERAS(C_ID));
+
+CREATE TABLE MATERIAS(
+M_ID CHAR(2) NOT NULL,
+MNOMBRE CHAR(6) NOT NULL,
+CREDITOS NUMERIC(2) NOT NULL,
+C_ID CHAR(2) NOT NULL,
+
+CONSTRAINT PK_MATERIAS PRIMARY KEY (M_ID),
+CONSTRAINT FK_MATERIAS FOREIGN KEY (C_ID) REFERENCES CARRERAS(C_ID));
+
+CREATE TABLE PROFESORES(P_ID CHAR(2) NOT NULL,
+PNOMBRE CHAR(20) NOT NULL,
+EDAD NUMERIC(2) NOT NULL,
+SEXO CHAR(1)NOT NULL,
+ESP CHAR(4) NOT NULL,
+GRADO CHAR(3) NOT NULL,
+D_ID CHAR(2) NOT NULL,
+
+CONSTRAINT PK_PROFESORES PRIMARY KEY (P_ID),
+CONSTRAINT FK_PROFESORES FOREIGN KEY (D_ID) REFERENCES DEPARTAMENTOS(D_ID));
+
+CREATE TABLE INSCRITOS(
+R_ID CHAR(3) NOT NULL,
+A_ID CHAR(2) NOT NULL,
+M_ID CHAR(2) NOT NULL,
+P_ID CHAR(2) NOT NULL,
+TURNO CHAR(1) NOT NULL,
+SEMESTRE CHAR(6) NOT NULL,
+CALIFICACION NUMERIC(3) NOT NULL,
+
+CONSTRAINT PK_INSCRITOS PRIMARY KEY (R_ID),
+CONSTRAINT FK_INSCRITOS_01 FOREIGN KEY (A_ID) REFERENCES ALUMNOS(A_ID),
+CONSTRAINT FK_INSCRITOS_02 FOREIGN KEY (M_ID) REFERENCES MATERIAS(M_ID),
+CONSTRAINT FK_INSCRITOS_03 FOREIGN KEY (P_ID) REFERENCES PROFESORES(P_ID));
+`,
             mode: 'sql',
             theme: 'midnight',
             lineNumbers: true,
@@ -73,5 +120,6 @@ WHERE ANOMBRE='MESSI LIONEL'))</textarea>
     <script src="../js/extras.js"></script>
     <script src="../js/escaner.js"></script>
     <script src="../js/parser.js"></script>
+    <script src="../js/connection.js"></script>
 </body>
 </html>
