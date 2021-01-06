@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "codeflask": "^1.4.1",
     "codemirror": "^5.52.2",
     "electron": "^8.1.1",
